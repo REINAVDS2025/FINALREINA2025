@@ -8,6 +8,17 @@
   }
 </script>
 
+  <script>
+fetch('estado.json')
+  .then(response => response.json())
+  .then(data => {
+    if (!data.votacion_abierta) {
+      window.location.href = 'cerrado.html';
+    }
+  });
+</script>
+
+
   <meta charset="UTF-8">
   <title>Votación Reina Valle 2025</title>
   <link rel="stylesheet" href="style.css">
