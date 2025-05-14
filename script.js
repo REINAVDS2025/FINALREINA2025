@@ -6,7 +6,7 @@ form.addEventListener('submit', (e) => {
 
   // Validar si ya votó
   if (document.cookie.includes('votado=true')) {
-    alert("¡Ya has votado! Gracias por tu participación.");
+    alert("¡Gracias por participar! Tu voto ya ha sido registrado. Solo se permite un voto por persona.");
     return;
   }
 
