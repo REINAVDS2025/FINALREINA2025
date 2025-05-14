@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+  // Redirigir si ya votó
+  if (document.cookie.includes('votado=true')) {
+    window.location.href = 'gracias.html';
+  }
+</script>
+
   <meta charset="UTF-8">
   <title>Votación Reina Valle 2025</title>
   <link rel="stylesheet" href="style.css">
