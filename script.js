@@ -1,5 +1,5 @@
 const form = document.getElementById('votingForm');
-const sheetURL = 'https://script.google.com/macros/s/AKfycbz-I5wJROiVC6yx6Lr98rsRFOKQugH50Nm6O_eSw-Qso3QUJMQDlGikRXIUbZZSHE7_nA/exec';
+const sheetURL = 'https://script.google.com/macros/s/AKfycbzR8vXTVQdLB1Lj4OwUgZt2ewyM23Jx1nT6W9IGCXTVZglkTET9FJ8H7GeIDBwtESWx/exec';
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -16,6 +16,7 @@ form.addEventListener('submit', (e) => {
     return;
   }
 
+  // Enviar el voto
   fetch(sheetURL, {
     method: 'POST',
     mode: 'no-cors',
@@ -23,7 +24,9 @@ form.addEventListener('submit', (e) => {
     body: `voto=${encodeURIComponent(candidata.value)}`
   });
 
+  // Guardar cookie para evitar otro voto
   document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 30); // 30 días
-  alert("¡Gracias por tu voto!");
-  form.reset();
+
+  // Redirigir a la página de agradecimiento
+  window.location.href = "gracias.html";
 });
