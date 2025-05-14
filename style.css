@@ -20,7 +20,7 @@ body {
 
 /* Título principal */
 h1 {
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* Tamaño moderado */
   margin-bottom: 24px;
 }
 
@@ -40,7 +40,7 @@ h1 {
 
 /* Nombre de la candidata */
 .candidate-name {
-  font-size: 1.3rem;
+  font-size: 1.2rem; /* Tamaño moderado */
   font-weight: bold;
   margin-top: 12px;
   margin-bottom: 8px;
@@ -52,8 +52,8 @@ h1 {
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 12px 20px;
-  font-size: 1rem;
+  padding: 14px 24px; /* Tamaño de botón más grande */
+  font-size: 1.1rem; /* Fuente un poco más grande */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -65,15 +65,15 @@ h1 {
 /* Responsive para pantallas pequeñas */
 @media (max-width: 480px) {
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Ajuste más sutil */
   }
 
   .candidate-name {
-    font-size: 1.1rem;
+    font-size: 1.1rem; /* Un poco más grande */
   }
 
   .vote-button {
-    padding: 10px 16px;
-    font-size: 0.95rem;
+    padding: 16px 30px; /* Botón aún más grande */
+    font-size: 1.2rem; /* Aumentar el texto */
   }
 }
