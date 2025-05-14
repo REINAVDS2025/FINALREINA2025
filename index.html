@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script>
-  // Redirigir si ya votó
-  if (document.cookie.includes('votado=true')) {
-    window.location.href = 'gracias.html';
-  }
+ <script>
+  fetch('estado.json')
+    .then(response => response.json())
+    .then(data => {
+      if (!data.votacion_abierta) {
+        // Si la votación está cerrada, redirigir siempre a cerrado.html
+        window.location.href = 'cerrado.html';
+      } else {
+        // Si la votación está abierta, verificar si ya votó
+        if (document.cookie.includes('votado=true')) {
+          window.location.href = 'gracias.html';
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error al cargar el estado de la votación:', error);
+    });
 </script>
 
-  <script>
-fetch('estado.json')
-  .then(response => response.json())
-  .then(data => {
-    if (!data.votacion_abierta) {
-      window.location.href = 'cerrado.html';
-    }
-  });
-</script>
 
 
   <meta charset="UTF-8">
