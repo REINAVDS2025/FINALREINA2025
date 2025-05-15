@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <script>
-  fetch('estado.json')
-    .then(response => response.json())
-    .then(data => {
-      if (!data.votacion_abierta) {
-        // Si la votación está cerrada, redirigir siempre a cerrado.html
-        window.location.href = 'cerrado.html';
-      } else {
-        // Si la votación está abierta, verificar si ya votó
-        if (document.cookie.includes('votado=true')) {
-          window.location.href = 'gracias.html';
-        }
-      }
-    })
-    .catch(error => {
-      console.error('Error al cargar el estado de la votación:', error);
-    });
-</script>
-
-
-
   <meta charset="UTF-8">
   <title>Votación Reina Valle 2025</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .banner {
+      width: 100%;
+      display: block;
+    }
+  </style>
+
+  <script>
+    // Control de acceso: primero ver si la votación está cerrada
+    fetch('estado.json')
+      .then(response => response.json())
+      .then(data => {
+        if (!data.votacion_abierta) {
+          window.location.href = 'cerrado.html';
+        } else if (document.cookie.includes('votado=true')) {
+          window.location.href = 'gracias.html';
+        }
+      })
+      .catch(error => {
+        console.error('Error al cargar el estado de la votación:', error);
+      });
+  </script>
 </head>
+
 <body>
   <header>
     <img src="banner.jpg" alt="Banner Reina 2025" class="banner">
