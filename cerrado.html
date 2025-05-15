@@ -2,31 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Votación Cerrada</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
-    img.banner {
+
+    .banner {
       width: 100%;
-      max-width: 800px;
+      display: block;
     }
+
     .mensaje {
-      font-size: 24px;
-      margin-top: 40px;
-      color: #c00;
+      padding: 40px 20px;
+      font-size: 1.4em;
+      color: #333;
+    }
+
+    .espaciado-banner2 {
+      margin-top: 80px; /* 8 cm aprox. */
     }
   </style>
 </head>
+
 <body>
-  <img src="banner.jpg" alt="Banner" class="banner">
+  <img src="banner.jpg" class="banner" alt="Banner principal">
+
   <div class="mensaje">
-    <h1>🛑 Se ha cerrado la votación 🛑</h1>
-    <p>En unos minutos anunciaremos a la ganadora.</p>
+    <p><strong>La votación se ha cerrado.</strong></p>
+    <p>En unos minutos anunciaremos a la ganadora. Gracias por tu interés.</p>
   </div>
-  <img src="banner2.jpg" alt="Banner inferior" style="margin-top: 80px; width: 100%;">
+
+  <img src="banner2.jpg" class="banner espaciado-banner2" alt="Banner inferior">
 </body>
 </html>
+
