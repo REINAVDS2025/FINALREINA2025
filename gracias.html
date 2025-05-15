@@ -4,33 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gracias por votar</title>
-  
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
 
-    .banner {
-      width: 100%;
-      display: block;
-    }
-
-    .espaciado-banner2 {
-      margin-top: 80px; /* 8 cm aproximadamente */
-    }
-
-    .mensaje {
-      padding: 40px 20px;
-      font-size: 1.4em;
-      color: #333;
-    }
-  </style>
-
-  <!-- Redirige a "cerrado.html" si ya se cerró la votación -->
   <script>
+    // Redirige a "cerrado.html" si ya se cerró la votación
     fetch('estado.json')
       .then(response => response.json())
       .then(data => {
@@ -39,16 +15,39 @@
         }
       });
   </script>
-</head>
 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    img.banner {
+      width: 100%;
+      display: block;
+    }
+
+    .mensaje {
+      padding: 40px 20px;
+      font-size: 1.4em;
+      color: #333;
+    }
+
+    .espaciado-banner2 {
+      margin-top: 80px;
+    }
+  </style>
+</head>
 <body>
-  <img src="banner.jpg" class="banner" alt="Banner principal">
+  <img src="banner.jpg" alt="Banner principal" class="banner">
 
   <div class="mensaje">
     <p><strong>¡Gracias por participar!</strong></p>
     <p>Tu voto ya ha sido registrado.<br>Solo se permite un voto por persona.</p>
   </div>
 
-  <img src="banner2.jpg" class="banner espaciado-banner2" alt="Banner inferior">
+  <img src="banner2.jpg" alt="Banner inferior" class="banner espaciado-banner2">
 </body>
 </html>
