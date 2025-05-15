@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gracias por tu voto</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gracias por votar</title>
+  
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
-    img.banner {
+
+    .banner {
       width: 100%;
-      max-width: 800px;
+      display: block;
     }
+
+    .espaciado-banner2 {
+      margin-top: 80px; /* 8 cm aproximadamente */
+    }
+
     .mensaje {
-      font-size: 24px;
-      margin-top: 40px;
-      color: #444;
+      padding: 40px 20px;
+      font-size: 1.4em;
+      color: #333;
     }
   </style>
-</head>
-<body>
+
+  <!-- Redirige a "cerrado.html" si ya se cerró la votación -->
   <script>
     fetch('estado.json')
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => {
         if (!data.votacion_abierta) {
           window.location.href = 'cerrado.html';
         }
       });
   </script>
+</head>
 
-  <img src="banner.jpg" alt="Banner" class="banner">
+<body>
+  <img src="banner.jpg" class="banner" alt="Banner principal">
+
   <div class="mensaje">
-    <p>¡Gracias por participar! Tu voto ya ha sido registrado.</p>
-    <p>Solo se permite un voto por persona.</p>
+    <p><strong>¡Gracias por participar!</strong></p>
+    <p>Tu voto ya ha sido registrado.<br>Solo se permite un voto por persona.</p>
   </div>
-  <img src="banner2.jpg" alt="Banner inferior" style="margin-top: 80px; width: 100%;">
+
+  <img src="banner2.jpg" class="banner espaciado-banner2" alt="Banner inferior">
 </body>
 </html>
