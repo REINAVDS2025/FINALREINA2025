@@ -1,32 +1,39 @@
-const form = document.getElementById('votingForm');
-const sheetURL = 'https://script.google.com/macros/s/AKfycbzR8vXTVQdLB1Lj4OwUgZt2ewyM23Jx1nT6W9IGCXTVZglkTET9FJ8H7GeIDBwtESWx/exec';
-
-form.addEventListener('submit', (e) => {
+document.getElementById('votingForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
-  // Validar si ya votó
-  if (document.cookie.includes('votado=true')) {
-    alert("¡Gracias por participar! Tu voto ya ha sido registrado. Solo se permite un voto por persona.");
-    return;
-  }
+  const form = e.target;
+  const candidata = form.candidata.value;
 
-  const candidata = document.querySelector('input[name="candidata"]:checked');
   if (!candidata) {
-    alert("Selecciona una candidata antes de votar.");
+    alert("Por favor selecciona una candidata.");
     return;
   }
 
-  // Enviar el voto
-  fetch(sheetURL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `voto=${encodeURIComponent(candidata.value)}`
-  });
+  // URLs de los endpoints
+  const urls = [
+    "https://script.google.com/macros/s/AKfycbyN-9IjGJ_B2FgJYgI43IBvAvQu-GYa-B5Hx8LgMfUrAlaVV8AfWuM2LbjB-JsTZAoAqA/exec",
+    "https://script.google.com/macros/s/AKfycbwOVFeXMXteDtxqtfFdgTaW57PyvL2HecVGac5VPsVAc-xG-mqFjv4gaifdrTjIRKS8/exec",
+    "https://script.google.com/macros/s/AKfycbzTkqt73RNbgzZSsDe99GRzULuJktBSFUCWOshBWdhU8Z0lUcan7q-dR--Usm71_Kub/exec",
+    "https://script.google.com/macros/s/AKfycbxkiWDuodOSjobjRnPHpUNcgNZDa29GyQTo1Qw9qANUurrp_0MG4sCNHilKEHZnQxv1/exec",
+    "https://script.google.com/macros/s/AKfycbwGd8O_mOV-TBnaWeJDc_9EIFgCs-TJqQo3necRnXkiECOJcugjwThcsRkjNQ2uNQYG/exec",
+    "https://script.google.com/macros/s/AKfycbw5bhPuuEiif8STDDHgHa76bPhngBS9l2MhH8wS8ebeLoAbMch4OPdBOrFGxvmrsz1CvA/exec"
+  ];
 
-  // Guardar cookie para evitar otro voto
-  document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 30); // 30 días
+  // Selección aleatoria de una URL
+  const endpoint = urls[Math.floor(Math.random() * urls.length)];
 
-  // Redirigir a la página de agradecimiento
-  window.location.href = "gracias.html";
+  // Enviar voto
+  fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify({ candidata }),
+    headers: { "Content-Type": "application/json" }
+  })
+    .then(response => {
+      document.cookie = "votado=true; max-age=31536000"; // Cookie por 1 año
+      window.location.href = "gracias.html";
+    })
+    .catch(error => {
+      alert("Error al registrar el voto. Intenta de nuevo.");
+      console.error("Error:", error);
+    });
 });
