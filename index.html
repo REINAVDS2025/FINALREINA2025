@@ -10,24 +10,31 @@
       display: block;
     }
     body {
-      display: none; /* Oculta hasta verificar estado */
+      display: none; /* Ocultar todo hasta validar */
     }
   </style>
   <script>
+    // Validar estado de votación y si ya votó
     document.addEventListener("DOMContentLoaded", () => {
+      // Si ya votó, redirigir inmediatamente a "gracias"
+      if (document.cookie.includes("votado=true")) {
+        window.location.href = "gracias.html";
+        return;
+      }
+
+      // Verificar si la votación está abierta
       fetch("estado.json")
         .then(response => response.json())
         .then(data => {
           if (!data.votacion_abierta) {
             window.location.href = "cerrado.html";
-          } else if (document.cookie.includes("votado=true")) {
-            window.location.href = "gracias.html";
           } else {
+            // Mostrar contenido solo si aún no votó y está abierta
             document.body.style.display = "block";
           }
         })
         .catch(error => {
-          console.error("Error al cargar el estado:", error);
+          console.error("Error cargando estado:", error);
           document.body.style.display = "block";
         });
     });
