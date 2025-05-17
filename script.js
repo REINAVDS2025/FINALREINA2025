@@ -1,15 +1,11 @@
-document.getElementById('votingForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+document.getElementById("votingForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const seleccion = document.querySelector('input[name="candidata"]:checked');
+  if (!seleccion) return alert("Selecciona una candidata.");
 
-  const form = e.target;
-  const candidata = form.candidata.value;
+  const voto = seleccion.value;
 
-  if (!candidata) {
-    alert("Por favor selecciona una candidata.");
-    return;
-  }
-
-  // URLs de los endpoints
+  // Lista de endpoints
   const urls = [
     "https://script.google.com/macros/s/AKfycbzcuA6W3UERKn0cIIsuTPZkZx2iIqL89VOsDfubUUfTxXgkacUphgX67NQH-2Wd-lI8xA/exec",
     "https://script.google.com/macros/s/AKfycbzpNcPpgx807b8QMW11RWatvjWyTqCCJ00o4x42yyHR3qcxivZfvvNSmoLIw1BDjlh8/exec",
@@ -19,28 +15,17 @@ document.getElementById('votingForm').addEventListener('submit', function (e) {
     "https://script.google.com/macros/s/AKfycbyz53OOKxgMndso-gDxH54iT5zTuq88GtENq_Qt3sFd8grnbRr1Lji3ifgz7yxrE2rKdA/exec"
   ];
 
-  // Selección aleatoria de una URL
-  const endpoint = urls[Math.floor(Math.random() * urls.length)];
+  // Seleccionar una al azar
+  const url = urls[Math.floor(Math.random() * urls.length)];
 
-  // Enviar voto (formato x-www-form-urlencoded)
-const formData = new URLSearchParams();
-formData.append("voto", candidata);
+  fetch(url, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `voto=${encodeURIComponent(voto)}`
+  });
 
-fetch(endpoint, {
-  method: "POST",
-  body: formData,
-  headers: { "Content-Type": "application/x-www-form-urlencoded" }
-})
-.then(response => {
-  if (response.ok) {
-    document.cookie = "votado=true; max-age=31536000"; // Cookie por 1 año
-    window.location.href = "gracias.html";
-  } else {
-    throw new Error("Respuesta no OK");
-  }
-})
-.catch(error => {
-  alert("Error al registrar el voto. Intenta de nuevo.");
-  console.error("Error:", error);
-});
+  // Guardar cookie y redirigir
+  document.cookie = "votado=true; max-age=31536000"; // 1 año
+  window.location.href = "gracias.html";
 });
