@@ -9,33 +9,25 @@
       width: 100%;
       display: block;
     }
-    body {
-      display: none; /* Ocultar todo hasta validar */
-    }
   </style>
   <script>
-    // Validar estado de votación y si ya votó
-    document.addEventListener("DOMContentLoaded", () => {
-      // Si ya votó, redirigir inmediatamente a "gracias"
-      if (document.cookie.includes("votado=true")) {
-        window.location.href = "gracias.html";
-        return;
-      }
-
-      // Verificar si la votación está abierta
-      fetch("estado.json")
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch('estado.json')
         .then(response => response.json())
         .then(data => {
+          const yaVoto = document.cookie.includes("votado=true");
+
           if (!data.votacion_abierta) {
-            window.location.href = "cerrado.html";
-          } else {
-            // Mostrar contenido solo si aún no votó y está abierta
-            document.body.style.display = "block";
+            // Si está cerrada, lo mando directo a cerrado
+            window.location.href = 'cerrado.html';
+          } else if (yaVoto) {
+            // Si ya votó y está abierta, lo mando a gracias
+            window.location.href = 'gracias.html';
           }
+          // Si no ha votado y está abierto, no hago nada y se muestra el formulario
         })
         .catch(error => {
-          console.error("Error cargando estado:", error);
-          document.body.style.display = "block";
+          console.error("Error al cargar estado.json", error);
         });
     });
   </script>
