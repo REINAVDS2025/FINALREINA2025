@@ -12,19 +12,23 @@
   </style>
 
   <script>
-    // Control de acceso: primero ver si la votación está cerrada
-    fetch('estado.json')
-      .then(response => response.json())
-      .then(data => {
-        if (!data.votacion_abierta) {
-          window.location.href = 'cerrado.html';
-        } else if (document.cookie.includes('votado=true')) {
-          window.location.href = 'gracias.html';
-        }
-      })
-      .catch(error => {
-        console.error('Error al cargar el estado de la votación:', error);
-      });
+    // Control de acceso: redirige según el estado actual y si ya votó
+    window.addEventListener('DOMContentLoaded', () => {
+      fetch('estado.json')
+        .then(response => response.json())
+        .then(data => {
+          if (!data.votacion_abierta) {
+            // Si la votación está cerrada
+            window.location.href = 'cerrado.html';
+          } else if (document.cookie.includes('votado=true')) {
+            // Si ya votó y sigue abierta
+            window.location.href = 'gracias.html';
+          }
+        })
+        .catch(error => {
+          console.error('Error al cargar el estado de la votación:', error);
+        });
+    });
   </script>
 </head>
 
