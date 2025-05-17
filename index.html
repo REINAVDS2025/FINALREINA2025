@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,29 +6,26 @@
   <title>Votación Reina Valle 2025</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .banner {
-      width: 100%;
-      display: block;
-    }
+    .banner { width: 100%; display: block; }
   </style>
-
   <script>
-    // Control de acceso: primero ver si la votación está cerrada
+    // Control de acceso: primero ver si la votación está cerrada o ya votó
     fetch('estado.json')
       .then(response => response.json())
       .then(data => {
+        const haVotado = () =>
+          document.cookie.includes('votado=true') ||
+          localStorage.getItem('votado') === 'true';
+
         if (!data.votacion_abierta) {
-          window.location.href = 'cerrado.html';
-        } else if (document.cookie.includes('votado=true')) {
-          window.location.href = 'gracias.html';
+          window.location.replace('cerrado.html');
+        } else if (haVotado()) {
+          window.location.replace('gracias.html');
         }
       })
-      .catch(error => {
-        console.error('Error al cargar el estado de la votación:', error);
-      });
+      .catch(error => console.error('Error al cargar estado:', error));
   </script>
 </head>
-
 <body>
   <header>
     <img src="banner.jpg" alt="Banner Reina 2025" class="banner">
@@ -38,28 +36,145 @@
     <div class="candidates">
       <label>
         <img src="alexia1.jpg" alt="Alexia Cristal Hernández Arias">
-        <input type="radio" name="candidata" value="Alexia Cristal Hernández Arias"> Alexia Cristal Hernández Arias
+        <input type="radio" name="candidata" value="Alexia Cristal Hernández Arias">
+        Alexia Cristal Hernández Arias
       </label>
       <label>
         <img src="angeles.jpg" alt="Ángeles Samantha Vázquez Moreno">
-        <input type="radio" name="candidata" value="Ángeles Samantha Vázquez Moreno"> Ángeles Samantha Vázquez Moreno
+        <input type="radio" name="candidata" value="Ángeles Samantha Vázquez Moreno">
+        Ángeles Samantha Vázquez Moreno
       </label>
       <label>
         <img src="dulce.jpg" alt="Dulce Jazmín Servín García">
-        <input type="radio" name="candidata" value="Dulce Jazmín Servín García"> Dulce Jazmín Servín García
+        <input type="radio" name="candidata" value="Dulce Jazmín Servín García">
+        Dulce Jazmín Servín García
       </label>
       <label>
         <img src="fatima.jpg" alt="Fátima Jaime Hernández">
-        <input type="radio" name="candidata" value="Fátima Jaime Hernández"> Fátima Jaime Hernández
+        <input type="radio" name="candidata" value="Fátima Jaime Hernández">
+        Fátima Jaime Hernández
       </label>
       <label>
         <img src="monica.jpg" alt="Mónica Zavala Murillo">
-        <input type="radio" name="candidata" value="Mónica Zavala Murillo"> Mónica Zavala Murillo
+        <input type="radio" name="candidata" value="Mónica Zavala Murillo">
+        Mónica Zavala Murillo
       </label>
     </div>
     <button type="submit">Enviar voto</button>
   </form>
 
   <script src="script.js"></script>
+</body>
+</html>
+
+
+<!-- script.js -->
+// Lista de endpoints distribuidos
+const endpoints = [
+  "https://script.google.com/macros/s/AKfycbzcuA6W3UERKn0cIIsuTPZkZx2iIqL89VOsDfubUUfTxXgkacUphgX67NQH-2Wd-lI8xA/exec",
+  "https://script.google.com/macros/s/AKfycbzpNcPpgx807b8QMW11RWatvjWyTqCCJ00o4x42yyHR3qcxivZfvvNSmoLIw1BDjlh8/exec",
+  "https://script.google.com/macros/s/AKfycbwFWi1p_b5MrKPY15FSXSuz5Dxso1Oyfj0WqX39wEV7I21PtaEU07EKsEZypXyuBn2O/exec",
+  "https://script.google.com/macros/s/AKfycbyzvNn27Dgg5nf4ZpPni10iq3MoIshJUoT_qGFk4zKB8thDmlChBgWeW0ZtnniUt48p/exec",
+  "https://script.google.com/macros/s/AKfycbyrtI9nAkDALmDAxiomfIExhcNgok6BmWkrHiDWKHkQwYVdwOEc1MSNvAWky5mYlJKJ/exec",
+  "https://script.google.com/macros/s/AKfycbyz53OOKxgMndso-gDxH54iT5zTuq88GtENq_Qt3sFd8grnbRr1Lji3ifgz7yxrE2rKdA/exec"
+];
+
+// Función para verificar voto previo
+const haVotado = () =>
+  document.cookie.includes('votado=true') ||
+  localStorage.getItem('votado') === 'true';
+
+window.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('votingForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if (haVotado()) {
+      alert('Ya has votado. ¡Gracias!');
+      window.location.replace('gracias.html');
+      return;
+    }
+
+    const seleccion = document.querySelector('input[name="candidata"]:checked');
+    if (!seleccion) {
+      alert('Selecciona una candidata.');
+      return;
+    }
+    const voto = seleccion.value;
+
+    // Elegir endpoint aleatorio
+    const url = endpoints[Math.floor(Math.random() * endpoints.length)];
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `voto=${encodeURIComponent(voto)}`
+    });
+
+    // Guardar cookie y localStorage por 30 días
+    document.cookie = 'votado=true; max-age=' + 60*60*24*30 + '; path=/';
+    localStorage.setItem('votado', 'true');
+
+    window.location.replace('gracias.html');
+  });
+});
+
+
+<!-- gracias.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gracias por Votar</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; text-align:center; position:relative; min-height:100vh; }
+    .banner, .footer-banner { width:100%; display:block; }
+    .content { padding:2rem; }
+  </style>
+  <script>
+    // Si la votación está cerrada, redirige a cerrado
+    fetch('estado.json')
+      .then(r=>r.json())
+      .then(data=>{
+        if (!data.votacion_abierta) window.location.replace('cerrado.html');
+      });
+  </script>
+</head>
+<body>
+  <img src="banner-superior.jpg" alt="Banner Superior" class="banner">
+  <div class="content">
+    <h1>¡Gracias por tu voto!</h1>
+    <p>Tu participación es muy importante para nosotros.</p>
+  </div>
+  <img src="banner-inferior.jpg" alt="Banner Inferior" class="footer-banner">
+</body>
+</html>
+
+
+<!-- cerrado.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votación Cerrada</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; text-align:center; position:relative; min-height:100vh; }
+    .banner, .footer-banner { width:100%; display:block; }
+    .content { padding:2rem; }
+  </style>
+  <script>
+    const haVotado = () => document.cookie.includes('votado=true') || localStorage.getItem('votado') === 'true';
+    if (!haVotado()) window.location.replace('index.html');
+  </script>
+</head>
+<body>
+  <img src="banner-superior.jpg" alt="Banner Superior" class="banner">
+  <div class="content">
+    <h1>Votación Cerrada</h1>
+    <p>La votación ya ha finalizado. Gracias por tu interés.</p>
+  </div>
+  <img src="banner-inferior.jpg" alt="Banner Inferior" class="footer-banner">
 </body>
 </html>
