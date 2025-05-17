@@ -1,8 +1,17 @@
 document.getElementById("votingForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
+  // Revisar si ya votó — se bloquea el voto doble sin alertas
+  if (document.cookie.includes("votado=true")) {
+    window.location.href = "gracias.html";
+    return;
+  }
+
   const seleccion = document.querySelector('input[name="candidata"]:checked');
-  if (!seleccion) return alert("Selecciona una candidata.");
+  if (!seleccion) {
+    alert("Selecciona una candidata.");
+    return;
+  }
 
   const voto = seleccion.value;
 
@@ -17,16 +26,19 @@ document.getElementById("votingForm").addEventListener("submit", function(event)
 
   const url = urls[Math.floor(Math.random() * urls.length)];
 
+  // Enviar el voto
   fetch(url, {
     method: "POST",
     mode: "no-cors",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
     body: `voto=${encodeURIComponent(voto)}`
   });
 
-  // Establecer cookie de votación
-  document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 365); // 1 año
+  // Guardar cookie para bloquear múltiples votos
+  document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 30); // 30 días
 
-  // Redirigir después del voto
+  // Redirigir directamente a gracias
   window.location.href = "gracias.html";
 });
