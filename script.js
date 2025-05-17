@@ -4,8 +4,7 @@ document.getElementById("votingForm").addEventListener("submit", function(event)
   // Validar si ya votó
   if (document.cookie.includes("votado=true")) {
     window.location.href = "gracias.html";
-    alert("¡Gracias por participar! Tu voto ya ha sido registrado. Solo se permite un voto por persona.");
-    return;
+    
   }
 
   const seleccion = document.querySelector('input[name="candidata"]:checked');
