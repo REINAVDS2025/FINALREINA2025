@@ -26,6 +26,6 @@ document.getElementById("votingForm").addEventListener("submit", function(event)
   });
 
   // Guardar cookie y redirigir
-  document.cookie = "votado=true; max-age=31536000"; // 1 año
+  document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 30); // 30 días
   window.location.href = "gracias.html";
 });
