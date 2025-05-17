@@ -22,18 +22,25 @@ document.getElementById('votingForm').addEventListener('submit', function (e) {
   // Selección aleatoria de una URL
   const endpoint = urls[Math.floor(Math.random() * urls.length)];
 
-  // Enviar voto
-  fetch(endpoint, {
-    method: "POST",
-    body: JSON.stringify({ candidata }),
-    headers: { "Content-Type": "application/json" }
-  })
-    .then(response => {
-      document.cookie = "votado=true; max-age=31536000"; // Cookie por 1 año
-      window.location.href = "gracias.html";
-    })
-    .catch(error => {
-      alert("Error al registrar el voto. Intenta de nuevo.");
-      console.error("Error:", error);
-    });
+  // Enviar voto (formato x-www-form-urlencoded)
+const formData = new URLSearchParams();
+formData.append("voto", candidata);
+
+fetch(endpoint, {
+  method: "POST",
+  body: formData,
+  headers: { "Content-Type": "application/x-www-form-urlencoded" }
+})
+.then(response => {
+  if (response.ok) {
+    document.cookie = "votado=true; max-age=31536000"; // Cookie por 1 año
+    window.location.href = "gracias.html";
+  } else {
+    throw new Error("Respuesta no OK");
+  }
+})
+.catch(error => {
+  alert("Error al registrar el voto. Intenta de nuevo.");
+  console.error("Error:", error);
+});
 });
