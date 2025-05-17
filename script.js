@@ -1,12 +1,6 @@
 document.getElementById("votingForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  // Validar si ya votó
-  if (document.cookie.includes("votado=true")) {
-    window.location.href = "gracias.html";
-    
-  }
-
   const seleccion = document.querySelector('input[name="candidata"]:checked');
   if (!seleccion) return alert("Selecciona una candidata.");
 
@@ -30,6 +24,9 @@ document.getElementById("votingForm").addEventListener("submit", function(event)
     body: `voto=${encodeURIComponent(voto)}`
   });
 
-  document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 30); // 30 días
+  // Establecer cookie de votación
+  document.cookie = "votado=true; max-age=" + (60 * 60 * 24 * 365); // 1 año
+
+  // Redirigir después del voto
   window.location.href = "gracias.html";
 });
