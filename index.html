@@ -10,26 +10,21 @@
       display: block;
     }
   </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      fetch('estado.json')
-        .then(response => response.json())
-        .then(data => {
-          const yaVoto = document.cookie.includes("votado=true");
 
-          if (!data.votacion_abierta) {
-            // Si está cerrada, lo mando directo a cerrado
-            window.location.href = 'cerrado.html';
-          } else if (yaVoto) {
-            // Si ya votó y está abierta, lo mando a gracias
-            window.location.href = 'gracias.html';
-          }
-          // Si no ha votado y está abierto, no hago nada y se muestra el formulario
-        })
-        .catch(error => {
-          console.error("Error al cargar estado.json", error);
-        });
-    });
+  <script>
+    // Control de acceso: primero ver si la votación está cerrada
+    fetch('estado.json')
+      .then(response => response.json())
+      .then(data => {
+        if (!data.votacion_abierta) {
+          window.location.href = 'cerrado.html';
+        } else if (document.cookie.includes('votado=true')) {
+          window.location.href = 'gracias.html';
+        }
+      })
+      .catch(error => {
+        console.error('Error al cargar el estado de la votación:', error);
+      });
   </script>
 </head>
 
