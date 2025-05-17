@@ -10,27 +10,25 @@
       display: block;
     }
     body {
-      display: none; /* Evita parpadeos antes de redirección */
+      display: none; /* Oculta hasta verificar estado */
     }
   </style>
-
   <script>
-    // Control de acceso: evitar mostrar contenido si no corresponde
-    window.addEventListener('DOMContentLoaded', () => {
-      fetch('estado.json')
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("estado.json")
         .then(response => response.json())
         .then(data => {
           if (!data.votacion_abierta) {
-            window.location.href = 'cerrado.html';
-          } else if (document.cookie.includes('votado=true')) {
-            window.location.href = 'gracias.html';
+            window.location.href = "cerrado.html";
+          } else if (document.cookie.includes("votado=true")) {
+            window.location.href = "gracias.html";
           } else {
-            document.body.style.display = 'block'; // Solo muestra si puede votar
+            document.body.style.display = "block";
           }
         })
         .catch(error => {
-          console.error('Error al cargar el estado de la votación:', error);
-          document.body.style.display = 'block';
+          console.error("Error al cargar el estado:", error);
+          document.body.style.display = "block";
         });
     });
   </script>
