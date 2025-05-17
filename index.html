@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,26 +5,29 @@
   <title>Votación Reina Valle 2025</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .banner { width: 100%; display: block; }
+    .banner {
+      width: 100%;
+      display: block;
+    }
   </style>
+
   <script>
-    // Control de acceso: primero ver si la votación está cerrada o ya votó
+    // Control de acceso: primero ver si la votación está cerrada
     fetch('estado.json')
       .then(response => response.json())
       .then(data => {
-        const haVotado = () =>
-          document.cookie.includes('votado=true') ||
-          localStorage.getItem('votado') === 'true';
-
         if (!data.votacion_abierta) {
-          window.location.replace('cerrado.html');
-        } else if (haVotado()) {
-          window.location.replace('gracias.html');
+          window.location.href = 'cerrado.html';
+        } else if (document.cookie.includes('votado=true')) {
+          window.location.href = 'gracias.html';
         }
       })
-      .catch(error => console.error('Error al cargar estado:', error));
+      .catch(error => {
+        console.error('Error al cargar el estado de la votación:', error);
+      });
   </script>
 </head>
+
 <body>
   <header>
     <img src="banner.jpg" alt="Banner Reina 2025" class="banner">
@@ -36,28 +38,23 @@
     <div class="candidates">
       <label>
         <img src="alexia1.jpg" alt="Alexia Cristal Hernández Arias">
-        <input type="radio" name="candidata" value="Alexia Cristal Hernández Arias">
-        Alexia Cristal Hernández Arias
+        <input type="radio" name="candidata" value="Alexia Cristal Hernández Arias"> Alexia Cristal Hernández Arias
       </label>
       <label>
         <img src="angeles.jpg" alt="Ángeles Samantha Vázquez Moreno">
-        <input type="radio" name="candidata" value="Ángeles Samantha Vázquez Moreno">
-        Ángeles Samantha Vázquez Moreno
+        <input type="radio" name="candidata" value="Ángeles Samantha Vázquez Moreno"> Ángeles Samantha Vázquez Moreno
       </label>
       <label>
         <img src="dulce.jpg" alt="Dulce Jazmín Servín García">
-        <input type="radio" name="candidata" value="Dulce Jazmín Servín García">
-        Dulce Jazmín Servín García
+        <input type="radio" name="candidata" value="Dulce Jazmín Servín García"> Dulce Jazmín Servín García
       </label>
       <label>
         <img src="fatima.jpg" alt="Fátima Jaime Hernández">
-        <input type="radio" name="candidata" value="Fátima Jaime Hernández">
-        Fátima Jaime Hernández
+        <input type="radio" name="candidata" value="Fátima Jaime Hernández"> Fátima Jaime Hernández
       </label>
       <label>
         <img src="monica.jpg" alt="Mónica Zavala Murillo">
-        <input type="radio" name="candidata" value="Mónica Zavala Murillo">
-        Mónica Zavala Murillo
+        <input type="radio" name="candidata" value="Mónica Zavala Murillo"> Mónica Zavala Murillo
       </label>
     </div>
     <button type="submit">Enviar voto</button>
@@ -66,4 +63,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
